@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>THINKFORGE | Smart Entry Sentry Device</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #abc4de;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+
+        /* ===== STICKY NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to right, #0a062f, #001535);
+            padding: 15px 5%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: #abc4de;
+        }
+
+        nav ul li a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #abc4de;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: 0.3s;
+        }
+
+        section {
+            padding: 80px 10%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: #1a237e;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 70vh;
+            background: linear-gradient(to right, #0a062fcb, #001535f5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 5%;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero h3 {
+            font-weight: 300;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+            line-height: 1.4;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        /* ===== PROJECT OVERVIEW ===== */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .overview-card h3 {
+            color: #1a237e;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .overview-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* ===== MEMBERS ===== */
+        .members-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .member-card {
+            background: white;
+            width: 260px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeSlide 0.8s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .member-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+            color: #1a237e;
+        }
+
+        .member-card p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== TIMELINE WITH ANIMATION ===== */
+        .timeline {
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: #1a237e;
+            transform: translateX(-50%);
+            animation: growLine 2s ease-in-out;
+        }
+
+        @keyframes growLine {
+            from {
+                height: 0;
+            }
+
+            to {
+                height: 100%;
+            }
+        }
+
+        .timeline-item {
+            width: 50%;
+            padding: 20px 40px;
+            position: relative;
+            opacity: 0;
+            animation: fadeInTimeline 0.8s ease forwards;
+        }
+
+        .timeline-item:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .timeline-item:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .timeline-item:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .timeline-item:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        @keyframes fadeInTimeline {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+            animation-name: fadeInTimelineRight;
+        }
+
+        @keyframes fadeInTimelineRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #1a237e;
+            border-radius: 50%;
+            border: 4px solid #abc4de;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(26, 35, 126, 0.7);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(26, 35, 126, 0);
+            }
+        }
+
+        .timeline-item.left::before {
+            right: -10px;
+        }
+
+        .timeline-item.right::before {
+            left: -10px;
+        }
+
+        .timeline-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .timeline-box h3 {
+            color: #1a237e;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .timeline-box p {
+            line-height: 1.7;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(to right, #0a062f, #001535);
+            color: white;
+            padding: 50px 5%;
+            text-align: center;
+        }
+
+        footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer h3 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        footer p {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        footer .footer-links {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links a {
+            color: #abc4de;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        footer .footer-links a:hover {
+            color: white;
+        }
+
+        footer .copyright {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        footer .copyright p {
+            font-size: 0.95rem;
+            color: #abc4de;
+            margin-bottom: 5px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+
+        /* Tablet (768px - 1024px) */
+        @media (max-width: 1024px) {
+            section {
+                padding: 60px 6%;
+            }
+
+            .hero {
+                min-height: 60vh;
+                padding: 60px 5%;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero h3 {
+                font-size: 1.4rem;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mobile (up to 768px) */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            nav {
+                padding: 12px 5%;
+            }
+
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 60px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 60px);
+                background: linear-gradient(to bottom, #0a062f, #001535);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                gap: 30px;
+                transition: left 0.3s ease;
+            }
+
+            nav ul.active {
+                left: 0;
+            }
+
+            nav ul li a {
+                font-size: 1.2rem;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            section {
+                padding: 50px 5%;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+
+            /* Hero responsive */
+            .hero {
+                min-height: 50vh;
+                padding: 50px 6%;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+                margin-bottom: 12px;
+            }
+
+            .hero h3 {
+                font-size: 1.15rem;
+                margin-bottom: 18px;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .members-container {
+                gap: 20px;
+            }
+
+            .member-card {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            /* Timeline responsive */
+            .timeline {
+                padding: 20px 0;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left;
+                padding: 20px 20px 20px 70px;
+            }
+
+            .timeline-item.left {
+                text-align: left;
+            }
+
+            .timeline-item::before {
+                left: 20px !important;
+                right: auto !important;
+            }
+
+            .timeline-box {
+                padding: 20px;
+            }
+
+            /* Footer responsive */
+            footer {
+                padding: 40px 5%;
+            }
+
+            footer h3 {
+                font-size: 1.5rem;
+            }
+
+            footer p {
+                font-size: 0.95rem;
+            }
+
+            footer .footer-links {
+                flex-direction: column;
+                gap: 15px;
+                margin: 25px 0;
+            }
+
+            footer .copyright {
+                margin-top: 25px;
+                padding-top: 20px;
+            }
+
+            footer .copyright p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Small Mobile (up to 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding-top: 55px;
+            }
+
+            nav {
+                padding: 10px 4%;
+            }
+
+            nav .logo {
+                font-size: 1.1rem;
+            }
+
+            section {
+                padding: 40px 4%;
+            }
+
+            /* Hero extra small */
+            .hero {
+                min-height: 45vh;
+                padding: 40px 5%;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+
+            .hero h3 {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin-bottom: 25px;
+            }
+
+            .member-card {
+                width: 100%;
+            }
+
+            .member-card img {
+                height: 240px;
+            }
+
+            .overview-card {
+                padding: 20px;
+            }
+
+            .overview-card h3 {
+                font-size: 1.15rem;
+            }
+
+            .overview-card p {
+                font-size: 0.9rem;
+            }
+
+            /* Timeline extra small */
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding: 15px 15px 15px 55px;
+            }
+
+            .timeline-item::before {
+                left: 10px !important;
+                width: 16px;
+                height: 16px;
+            }
+
+            .timeline-box {
+                padding: 18px;
+            }
+
+            .timeline-box h3 {
+                font-size: 1.05rem;
+            }
+
+            .timeline-box p {
+                font-size: 0.9rem;
+            }
+
+            /* Footer extra small */
+            footer {
+                padding: 35px 5%;
+            }
+
+            footer h3 {
+                font-size: 1.3rem;
+            }
+
+            footer p {
+                font-size: 0.88rem;
+            }
+
+            footer .footer-links a {
+                font-size: 0.9rem;
+            }
+
+            footer .copyright p {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- STICKY NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">THINKFORGE</div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#members">Team</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>THINKFORGE</h1>
+            <h3>Smart Entry Sentry Device</h3>
+            <p>
+                A biomedical safety solution designed to control sterile laboratory access
+                by detecting improper PPE usage using computer vision and embedded systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- PROJECT OVERVIEW -->
+    <section id="overview">
+        <h2>Project Overview</h2>
+        <div class="overview-grid">
+            <div class="overview-card">
+                <h3>🎯 Problem Statement</h3>
+                <p>Contamination in sterile laboratories due to improper PPE usage poses serious health and safety
+                    risks. Manual monitoring is inefficient and prone to human error.</p>
+            </div>
+            <div class="overview-card">
+                <h3>💡 Our Solution</h3>
+                <p>An automated entry control system that uses ESP32-CAM and computer vision to verify proper PPE
+                    compliance before granting laboratory access.</p>
+            </div>
+            <div class="overview-card">
+                <h3>🔧 Key Features</h3>
+                <p>Motion detection via PIR sensor, real-time image capture, AI-powered PPE verification, automated door
+                    control, and instant alert system.</p>
+            </div>
+            <div class="overview-card">
+                <h3>🎓 Project Impact</h3>
+                <p>Enhances laboratory safety, reduces contamination risks, automates compliance monitoring, and
+                    provides a scalable solution for biomedical facilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBERS -->
+    <section id="members">
+        <h2>Meet Our Members</h2>
+        <div class="members-container" id="members-container"></div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline">
+        <h2>Project Timeline</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-box">
+                    <h3>Project Ideation</h3>
+                    <p>Problem identification and concept development focused on laboratory safety and PPE compliance
+                        challenges.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right">
+                <div class="timeline-box">
+                    <h3>Design Phase</h3>
+                    <p>System architecture design, hardware component selection, and development of system flowcharts
+                        and diagrams.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item left">
+                <div class="timeline-box">
+                    <h3>Implementation</h3>
+                    <p>ESP32-CAM programming, PIR sensor integration, computer vision algorithm development, and system
+                        testing.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item right">
+                <div class="timeline-box">
+                    <h3>Testing & Documentation</h3>
+                    <p>Comprehensive system validation, performance testing, technical report writing, and final
+                        presentation preparation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-content">
+            <h3>THINKFORGE</h3>
+            <p>Innovating Laboratory Safety Through Smart Technology</p>
+            <p>Smart Entry Sentry Device - A Biomedical Engineering Solution</p>
+
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#overview">Overview</a>
+                <a href="#members">Team</a>
+                <a href="#timeline">Timeline</a>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2024 THINKFORGE Team. All rights reserved.</p>
+                <p>Forging Ideas into Reality</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        const members = [
+            { name: "Olafusi Marvelous Kehinde", role: "Group Leader", image: "images/Olafusi_Marvelous_Kehinde.jpg" },
+            { name: "OGUNGBADE, Olamilekan Matthew", role: "Assistant Group Leader", image: "images/Olamilekan_Ogungbade.jpg" },
+            { name: "Salaudeen Rodiat Omowunmi", role: "Secretary", image: "images/Salaudeen_Rodiat_Omowunmi.jpg" },
+            { name: "Akinsola Mutmainah Opeyemi", role: "Treasurer", image: "images/Akinsola_Mutmainah_Opeyemi.jpg" },
+            { name: "Olowookere Juwon Taiwo", role: "Project Manager", image: "images/Olowookere_Juwon_Taiwo.jpg" },
+            { name: "Adeyemi Fathia Wuraola", role: "Project Member", image: "images/Adeyemi_Fathia_Wuraola.jpg" },
+            { name: "Yakubu Nezibetu Eleojo", role: "Project Member", image: "images/Yakubu_Nezibetu_Eleojo.jpg" },
+            { name: "Adeeko Aishat Oluwatosin", role: "Project Member", image: "images/Adeeko_Aishat_Oluwatosin.jpg" },
+            { name: "Azeez Aishat Temilade", role: "Project Member", image: "images/Azeez_Aishat_Temilade.jpg" },
+            { name: "Adedimeta Hikmat Bisola", role: "Project Member", image: "images/Adedimeta_Hikmat_Bisola.jpg" },
+            { name: "Adewoyin Fatimoh Adeyemisi", role: "Project Member", image: "images/Adewoyin_Fatimoh_Adeyemisi.jpg" },
+            { name: "Oladejo Mubarakah Olanrewaju", role: "Project Member", image: "images/Oladejo_Mubarakah_Olanrewaju.jpg" },
+            { name: "Ayodele Grace Motunrayo", role: "Project Member", image: "images/Ayodele_Grace_Motunrayo.jpg" },
+            { name: "Olatunde Samuel Elujoba", role: "Project Member", image: "images/Olatunde_Samuel_Elujoba.jpg" },
+            { name: "Abidoye John Oluwatobi", role: "Project Member", image: "images/Abidoye_John_Oluwatobi.jpg" },
+            { name: "Oladimeji Oluwasanmi Solomon", role: "Project Member", image: "images/Oladimeji_Oluwasanmi_Solomon.jpg" },
+            { name: "Akinsade Emmanuel Oluwafemi", role: "Project Member", image: "images/Akinsade_Emmanuel_Oluwafemi.jpg" },
+            { name: "Abdulkareem Sodiq Olalekan", role: "Project Member", image: "images/Abdulkareem_Sodiq_Olalekan.jpg" },
+            { name: "Muhammed-Fatiu Adinoyi", role: "Project Member", image: "images/Muhammed_Fatiu_Adinoyi.jpg" },
+            { name: "Abdullahi Aishat Abiodun", role: "Project Member", image: "images/Abdullahi_Aishat_Abiodun.jpg" },
+            { name: "Abdulwahab Shekinah Foluke", role: "Project Member", image: "images/Abdulwahab_Shekinah_Foluke.jpg" },
+            { name: "Muhammad Halimah Ladidi", role: "Project Member", image: "images/Muhammad_Halimah_Ladidi.jpg" },
+            { name: "Oludare Emmanuel Anuoluwapo", role: "Project Member", image: "images/Oludare_Emmanuel_Anuoluwapo.jpg" },
+            { name: "Amodu Awal Adekola", role: "Project Member", image: "images/Amodu_Awal_Adekola.jpg" },
+            { name: "Abdus-Salam Radiya", role: "Project Member", image: "images/Abdus_Salam_Radiya.jpg" },
+            { name: "Salihu Faridah", role: "Project Member", image: "images/Salihu_Faridah.jpg" }
+        ];
+
+        const container = document.getElementById("members-container");
+        let currentIndex = 0;
+        let visibleCount = 3;
+
+        // Adjust visible count based on screen size
+        function updateVisibleCount() {
+            if (window.innerWidth <= 480) {
+                visibleCount = 1;
+            } else if (window.innerWidth <= 768) {
+                visibleCount = 2;
+            } else {
+                visibleCount = 3;
+            }
+        }
+
+        // Default avatar SVG for members without photos
+        const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231a237e"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+
+        function renderMembers() {
+            container.innerHTML = "";
+            for (let i = 0; i < visibleCount; i++) {
+                const index = (currentIndex + i) % members.length;
+                const m = members[index];
+
+                const card = document.createElement("div");
+                card.className = "member-card";
+
+                const img = document.createElement("img");
+                img.alt = m.name;
+
+                // Try to load the member's image, fall back to default avatar if it fails
+                img.src = m.image;
+                img.onerror = function () {
+                    this.src = defaultAvatar;
+                    this.style.padding = "40px";
+                    this.style.backgroundColor = "#f0f0f0";
+                };
+
+                const nameEl = document.createElement("h3");
+                nameEl.textContent = m.name;
+
+                const roleEl = document.createElement("p");
+                roleEl.textContent = m.role;
+
+                card.appendChild(img);
+                card.appendChild(nameEl);
+                card.appendChild(roleEl);
+                container.appendChild(card);
+            }
+        }
+
+        function slideMembers() {
+            currentIndex = (currentIndex + visibleCount) % members.length;
+            renderMembers();
+        }
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById("menu-toggle");
+        const navMenu = document.getElementById("nav-menu");
+
+        menuToggle.addEventListener("click", () => {
+            menuToggle.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+
+        // Close menu when clicking a link
+        navMenu.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                menuToggle.classList.remove("active");
+                navMenu.classList.remove("active");
+            });
+        });
+
+        // Initialize and handle window resize
+        updateVisibleCount();
+        renderMembers();
+
+        window.addEventListener("resize", () => {
+            updateVisibleCount();
+            renderMembers();
+        });
+
+        // Auto-slide members
+        setInterval(slideMembers, 4000);
+    </script>
+
+</body>
+
+</html>
